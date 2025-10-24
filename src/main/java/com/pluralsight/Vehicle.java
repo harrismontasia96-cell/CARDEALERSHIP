@@ -22,6 +22,38 @@ public class Vehicle {
     }
 
 
+    public double getPrice() {
+        return price;
+    }
+
+    // Optional: add other getters and setters
+    public int getVin() {
+        return vin;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public String getMake() {
+        return make;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getOdometer() {
+        return odometer;
+    }
 
     @Override
     public String toString() {
@@ -29,3 +61,4 @@ public class Vehicle {
                 vin, year, make, model, vehicleType, color, odometer, price);
     }
 }
+
