@@ -4,21 +4,38 @@ import java.io.*;
 import java.util.*;
 
 public class DealershipFileManager {
+
     public Dealership getDealership(String filename) {
         File file = new File(filename);
+
         if (!file.exists()) {
+            System.out.println("Error:" + filename + " not found");
             return null;
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
             String header = br.readLine();
-            if (header == null) return null;
+            if (header == null) {
+                System.out.println("Error:" + filename + "is empty or missing header");
+                return null;
+            }
             String[] dealershipInfo = header.split("\\|");
-            Dealership dealership = new Dealership(dealershipInfo[0], dealershipInfo[1], dealershipInfo[2]);
+            if (dealershipInfo.length < 3) {
+                System.out.println("Error: Dealership header line is invalid.");
+                return null;
+            }
+
+            Dealership dealership = new Dealership(dealershipInfo[0], dealershipInfo[1], dealershipInfo[2]
+            );
+
 
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split("\\|");
+                if (data.length < 8) continue;
+
+
                 Vehicle v = new Vehicle(
                         Integer.parseInt(data[0]),
                         Integer.parseInt(data[1]),
@@ -29,10 +46,14 @@ public class DealershipFileManager {
                 dealership.addVehicle(v);
             }
             return dealership;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+    public void saveDealership(Dealership dealership) {
+        saveDealership(dealership, "inventory.csv");
     }
 
     public void saveDealership(Dealership dealership, String filename) {
@@ -47,9 +68,8 @@ public class DealershipFileManager {
             e.printStackTrace();
         }
     }
-
-    // Overload for saving with a default filename if needed
-    public void saveDealership(Dealership dealership) {
-        saveDealership(dealership, "default_dealership.csv");
-    }
 }
+
+
+
+

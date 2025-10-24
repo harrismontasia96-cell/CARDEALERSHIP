@@ -32,7 +32,7 @@ public class UserInterface {
             processUserInput(choice);
         } while (choice != 99);
 
-        fileManager.saveDealership(dealership);
+        fileManager.saveDealership(dealership, "inventory.csv");
         System.out.println("Application closed. Data saved.");
     }
 
