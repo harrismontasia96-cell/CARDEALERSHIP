@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Dealership {
+    private int id; // NEW
     private String name;
     private String address;
     private String phone;
-    private List<Vehicle> inventory = new ArrayList<>();
 
-    public Dealership(String name, String address, String phone) {
+    public Dealership(int id, String name, String address, String phone) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
     }
+
+    public int getId() { return id; }
+
     public String getName() {
         return name;
     }

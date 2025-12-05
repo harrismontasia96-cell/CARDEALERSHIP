@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 public class Vehicle {
+    private int id;       // NEW for DB primary key
     private int vin;
     private int year;
     private String make;
@@ -10,7 +11,9 @@ public class Vehicle {
     private int odometer;
     private double price;
 
-    public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
+    public Vehicle(int id, int vin, int year, String make, String model,
+                   String vehicleType, String color, int odometer, double price) {
+        this.id = id;
         this.vin = vin;
         this.year = year;
         this.make = make;
@@ -21,10 +24,7 @@ public class Vehicle {
         this.price = price;
     }
 
-
-    public double getPrice() {
-        return price;
-    }
+    public int getId() { return id; }
 
     // Optional: add other getters and setters
     public int getVin() {
