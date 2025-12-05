@@ -3,7 +3,7 @@ package com.pluralsight;
 public abstract class Contract {
 
     protected String contractType;
-    protected String DateOfContract;
+    protected String dateOfContract;
     protected String customerName;
     protected String customerEmail;
     protected int vehicleVin;
@@ -14,11 +14,11 @@ public abstract class Contract {
     protected String color;
     protected double odometer;
     protected String vehicleSold;
-    protected int totalPrice;
+    protected double totalPrice;
     protected double monthlyPayment;
 
     public Contract(String contractType, String dateOfContract, String customerName,
-                    String customerEmail, String vehicleVin, int year,
+                    String customerEmail, int vehicleVin, int year,
                     String make, String model, String vehicleType,
                     String color, double odometer, String vehicleSold) {
         this.contractType = contractType;
