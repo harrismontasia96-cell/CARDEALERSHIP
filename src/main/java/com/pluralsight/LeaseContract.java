@@ -1,6 +1,10 @@
 package com.pluralsight;
 
 public class LeaseContract extends Contract {
+    private static final double INTEREST_RATE = 0.04;
+    private static final double LEASE_TERM_MONTHS = 36;
+    private static final double LEASE_RATE = 0.60;
+
     private int id;
     private int vehicleId;
     private String customerName;
@@ -10,18 +14,13 @@ public class LeaseContract extends Contract {
     private double monthlyPayment;
     private String startDate;
 
-    // constructor, getters, etc
-}
-
-
-    private static final double INTEREST_RATE = 0.04;
-    private static final double LEASE_TERM_MONTHS = 36;
-    private static final double LEASE_RATE = 0.60;
-
     private Vehicle vehicleSold;
 
-    public LeaseContract(String date, String customerName, String customerEmail,
+    public LeaseContract(String date,
+                         String customerName,
+                         String customerEmail,
                          Vehicle vehicleSold) {
+
         super(
                 "LEASE",
                 customerName,
@@ -39,25 +38,23 @@ public class LeaseContract extends Contract {
         );
 
         this.vehicleSold = vehicleSold;
+        this.customerName = customerName;
 
-        double totalPrice = getTotalPrice();
-        double monthlyPayment = getMonthlyPayment();
-
-        super.setTotalPrice(totalPrice);
-        super.setMonthlyPayment(monthlyPayment);
-
+        // Set calculated values
+        super.setTotalPrice(getTotalPrice());
+        super.setMonthlyPayment(getMonthlyPayment());
     }
-
 
     @Override
     public double getTotalPrice() {
         return vehicleSold.getPrice() * LEASE_RATE;
     }
+
     @Override
     public double getMonthlyPayment() {
         double leasePrice = getTotalPrice();
         double monthlyRate = INTEREST_RATE / 12;
-        return (leasePrice * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -LEASE_TERM_MONTHS));
+        return (leasePrice * monthlyRate) /
+                (1 - Math.pow(1 + monthlyRate, -LEASE_TERM_MONTHS));
     }
-
-
+}

@@ -7,10 +7,13 @@ import java.util.Scanner;
 public class UserInterface {
     private Dealership dealership;
     private Scanner scanner = new Scanner(System.in);
-    private DealershipFileManager fileManager = new DealershipFileManager();
 
     public void display() {
-        loadDealership(); // ask user which dealership to load
+        loadDealership();
+        if (dealership == null) {
+            System.out.println("Cannot continue without a valid dealership.");
+            return;
+        }
 
         int choice;
         do {
@@ -29,30 +32,31 @@ public class UserInterface {
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
             scanner.nextLine();
+
             processUserInput(choice);
+
         } while (choice != 99);
 
-        fileManager.saveDealership(dealership, "inventory.csv");
-        System.out.println("Application closed. Data saved.");
+        System.out.println("Application closed.");
     }
 
     private void loadDealership() {
-        System.out.print("Enter dealership filename (e.g., AutoMart.csv): ");
-        String filename = scanner.nextLine();
-        dealership = fileManager.getDealership(filename);
+        System.out.print("Enter dealership name: ");
+        String name = scanner.nextLine();
+
+
+        DealershipDao dealershipDao = new DealershipDao(DbConnection.getConnection());
+        dealership = dealershipDao.getDealershipByName(name);
 
         if (dealership == null) {
-            System.out.println("File not found. Creating a new dealership profile.");
-            System.out.print("Enter dealership name: ");
-            String name = scanner.nextLine();
-            System.out.print("Enter address: ");
-            String address = scanner.nextLine();
-            System.out.print("Enter phone number: ");
-            String phone = scanner.nextLine();
-
-            dealership = new Dealership(name, address, phone);
-            fileManager.saveDealership(dealership, filename);
+            System.out.println("Dealership not found in database!");
+            return;
         }
+
+
+        VehicleDao vehicleDao = new VehicleDao(DbConnection.getConnection());
+        List<Vehicle> vehicles = vehicleDao.getAllVehicles(dealership.getId());
+        dealership.setAllVehicles(vehicles);
 
         System.out.println("Loaded dealership: " + dealership.getName());
     }
@@ -62,20 +66,22 @@ public class UserInterface {
             case 7:
                 displayVehicles(dealership.getAllVehicles());
                 break;
+
             case 10:
-                fileManager.saveDealership(dealership);
                 loadDealership();
                 break;
+
             case 99:
                 System.out.println("Goodbye!");
                 break;
+
             default:
                 System.out.println("Option not implemented yet.");
         }
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
-        if (vehicles.isEmpty()) {
+        if (vehicles == null || vehicles.isEmpty()) {
             System.out.println("No vehicles found.");
         } else {
             for (Vehicle v : vehicles) {

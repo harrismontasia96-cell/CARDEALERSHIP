@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 public class SalesContract extends Contract {
+
     private int id;
     private int vehicleId;
     private String customerName;
@@ -10,9 +11,6 @@ public class SalesContract extends Contract {
     private double totalPrice;
     private String dateOfSale;
 
-    // constructor, getters, etc
-}
-
 
     private static final double SALES_TAX_RATE = 0.05;
     private static final double RECORDING_FEE = 100;
@@ -21,7 +19,6 @@ public class SalesContract extends Contract {
 
     private boolean finance;
     private Vehicle vehicleSold;
-
 
     public SalesContract(String date, String customerName, String customerEmail,
                          Vehicle vehicleSold, boolean finance) {
@@ -39,13 +36,14 @@ public class SalesContract extends Contract {
                 vehicleSold.getColor(),
                 vehicleSold.getOdometer(),
                 vehicleSold.getMake() + " " + vehicleSold.getModel(),
-                0.0, // total price (computed later)
-                0.0  // monthly payment (computed later)
+                0.0,
+                0.0
         );
 
         this.finance = finance;
         this.vehicleSold = vehicleSold;
     }
+
     @Override
     public double getTotalPrice() {
         double price = vehicleSold.getPrice();
@@ -54,6 +52,7 @@ public class SalesContract extends Contract {
 
         return price + salesTax + RECORDING_FEE + processingFee;
     }
+
     @Override
     public double getMonthlyPayment() {
         if (!finance) {
@@ -75,5 +74,4 @@ public class SalesContract extends Contract {
         double monthlyRate = rate / 12.0;
         return (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
     }
-
-
+}
